@@ -1,14 +1,12 @@
 package Init
 
 import (
-	
 	"fmt"
-	
 
-	"github.com/jugalw13/student-go-node/blockchain"
-	"github.com/jugalw13/student-go-node/security"
-	"github.com/jugalw13/student-go-node/student"
-	"github.com/jugalw13/student-go-node/utils"
+	"github.com/go-ready-blockchain/blockchain-go-core/blockchain"
+	"github.com/go-ready-blockchain/blockchain-go-core/security"
+	"github.com/go-ready-blockchain/blockchain-go-core/student"
+	"github.com/go-ready-blockchain/blockchain-go-core/utils"
 )
 
 func InitializeBlockChain() {
@@ -39,4 +37,3 @@ func InitStudentNode(usn string, branch string, name string, gender string, dob 
 	//StoreStudentDataInDb(student.EncodeToBytes(stud))
 
 }
-

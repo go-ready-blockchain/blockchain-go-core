@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jugalw13/consensus-algorithm/Init"
-	"github.com/jugalw13/consensus-algorithm/blockchain"
-	"github.com/jugalw13/consensus-algorithm/company"
+	"github.com/go-ready-blockchain/blockchain-go-core/Init"
+	"github.com/go-ready-blockchain/blockchain-go-core/blockchain"
+	"github.com/go-ready-blockchain/blockchain-go-core/company"
 )
 
 func printUsage() {

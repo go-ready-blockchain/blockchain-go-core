@@ -3,10 +3,10 @@ package company
 import (
 	"fmt"
 
-	"github.com/jugalw13/company-go-node/blockchain"
-	"github.com/jugalw13/company-go-node/security"
-	"github.com/jugalw13/company-go-node/student"
-	"github.com/jugalw13/company-go-node/utils"
+	"github.com/go-ready-blockchain/blockchain-go-core/blockchain"
+	"github.com/go-ready-blockchain/blockchain-go-core/security"
+	"github.com/go-ready-blockchain/blockchain-go-core/student"
+	"github.com/go-ready-blockchain/blockchain-go-core/utils"
 )
 
 //Supports only 1 company for now

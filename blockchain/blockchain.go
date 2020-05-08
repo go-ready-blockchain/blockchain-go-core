@@ -3,8 +3,8 @@ package blockchain
 import (
 	"fmt"
 
-	"github.com/jugalw13/academicdept-go-node/student"
-	"github.com/jugalw13/academicdept-go-node/utils"
+	"github.com/go-ready-blockchain/blockchain-go-core/student"
+	"github.com/go-ready-blockchain/blockchain-go-core/utils"
 )
 
 type BlockChainIterator struct {
