@@ -1,5 +1,8 @@
 package main
 
+//ONLY FOR TESTING PURPOSES
+//MANUAL PIPELINE
+
 import (
 	"encoding/json"
 	"fmt"
@@ -181,9 +184,9 @@ func callverificationByAcademicDept(w http.ResponseWriter, r *http.Request) {
 	message := ""
 	flag := verificationByAcademicDept(b.Name, b.Company)
 	if flag == true {
-		message = "Company retrieved the data!"
+		message = "Verification By Academic Dept Successfully completed!"
 	} else {
-		message = "Company failed to retrieve the data!"
+		message = "Verification By Academic Dept Failed!"
 	}
 
 	w.Header().Set("Content-Type", "application/json")

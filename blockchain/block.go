@@ -28,7 +28,7 @@ func CreateBlock(data []byte, signature []byte, company []byte, verification []b
 }
 
 func InitFirstBlock() *Block {
-	return CreateBlock([]byte("Initial Block"), []byte(""), []byte(""), []byte(""), []byte{})
+	return CreateBlock([]byte("Genesis Block"), []byte(""), []byte(""), []byte(""), []byte{})
 }
 
 func (b *Block) Serialize() []byte {

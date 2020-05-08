@@ -9,9 +9,6 @@ import (
 	"github.com/go-ready-blockchain/blockchain-go-core/utils"
 )
 
-//Supports only 1 company for now
-//Retrieve Data from Buffer itself
-
 func RetrieveData(name string, company string) bool {
 
 	block := blockchain.GetBlockFromBuffer(name, company)
