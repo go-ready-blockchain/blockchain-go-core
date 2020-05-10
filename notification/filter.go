@@ -1,4 +1,4 @@
-package utils
+package notification
 
 import (
 	"fmt"
@@ -13,6 +13,7 @@ import (
 )
 
 type EmailItem struct {
+	Usn   string
 	Name  string
 	Email string
 }
@@ -90,7 +91,7 @@ func ApplyFilter(Backlog string, StarOffer string, Branch string, Gender string,
 
 	// Create the Expression to fill the input struct with.
 	cond := CreateCondition(Backlog, StarOffer, Branch, Gender, CgpaCond, Cgpa, Perc10thCond, Perc10th, Perc12thCond, Perc12th)
-	proj := expression.NamesList(expression.Name("Name"), expression.Name("Email"))
+	proj := expression.NamesList(expression.Name("Usn"), expression.Name("Name"), expression.Name("Email"))
 	expr, err := expression.NewBuilder().WithCondition(cond).WithProjection(proj).Build()
 	if err != nil {
 		exitWithError(fmt.Errorf("failed to create the Expression, %v", err))
@@ -118,7 +119,7 @@ func ApplyFilter(Backlog string, StarOffer string, Branch string, Gender string,
 	if err != nil {
 		exitWithError(fmt.Errorf("failed to unmarshal Query result items, %v", err))
 	}
-	fmt.Println(emailitems)
+	//fmt.Println(emailitems)
 	return emailitems
 
 }

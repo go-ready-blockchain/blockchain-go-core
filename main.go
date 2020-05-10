@@ -111,18 +111,18 @@ func callcreateBlockChain(w http.ResponseWriter, r *http.Request) {
 
 func calladdStudent(w http.ResponseWriter, r *http.Request) {
 	type jsonBody struct {
-		Usn       string `json:"Usn"`
-		Branch    string `json:"Branch"`
-		Name      string `json:"Name"`
-		Gender    string `json:"Gender"`
-		Dob       string `json:"Dob"`
+		Usn       string  `json:"Usn"`
+		Branch    string  `json:"Branch"`
+		Name      string  `json:"Name"`
+		Gender    string  `json:"Gender"`
+		Dob       string  `json:"Dob"`
 		Perc10th  float32 `json:"Perc10th"`
 		Perc12th  float32 `json:"Perc12th"`
 		Cgpa      float32 `json:"Cgpa"`
-		Backlog   bool   `json:"Backlog"`
-		Email     string `json:"Email"`
-		Mobile    string `json:"Mobile"`
-		StarOffer bool   `json:"StarOffer"`
+		Backlog   bool    `json:"Backlog"`
+		Email     string  `json:"Email"`
+		Mobile    string  `json:"Mobile"`
+		StarOffer bool    `json:"StarOffer"`
 	}
 	decoder := json.NewDecoder(r.Body)
 	var b jsonBody
@@ -257,6 +257,7 @@ func callprintUsage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	notification.test_main()
 	port := "5000"
 	http.HandleFunc("/createBlockChain", callcreateBlockChain)
 	http.HandleFunc("/student", calladdStudent)
@@ -268,5 +269,5 @@ func main() {
 	http.HandleFunc("/print", callprintChain)
 	http.HandleFunc("/usage", callprintUsage)
 	fmt.Printf("Server listening on localhost:%s\n", port)
-	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	//http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 }
