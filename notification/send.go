@@ -2,31 +2,36 @@ package notification
 
 import "fmt"
 
-func sendNotification(companyName string, Backlog string, StarOffer string, Branch string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) {
+func SendNotification(link string, companyName string, Backlog string, StarOffer string, Branch string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) bool {
 	emailitems := ApplyFilter(Backlog, StarOffer, Branch, Gender, CgpaCond, Cgpa, Perc10thCond, Perc10th, Perc12thCond, Perc12th)
-	fmt.Println(emailitems)
+	//fmt.Println(emailitems)
 
-	for name, email := range emailitems {
-		fmt.Println(name, email)
-		//sendEmail("Request for Student Data", name, companyName, "link: ", email)
+	for _, emailitem := range emailitems {
+		email := emailitem.Email
+		usn := emailitem.Usn
+		name := emailitem.Name
+		fmt.Println(email, usn, name)
+		sendEmail("Request for Student Data", name, usn, companyName, link, email)
+
 	}
+	return true
 }
 
-func test_main() {
-	Backlog := "true"
-	StarOffer := ""
-	Branch := ""
-	Gender := ""
-	CgpaCond := ""
-	//CgpaCond := "GreaterThan"
-	Cgpa := "5"
-	//Perc10thCond := ""
-	Perc10thCond := "GreaterThan"
-	Perc10th := "30"
-	//Perc12thCond := ""
-	Perc12thCond := "GreaterThan"
-	Perc12th := "90"
+// func Test_main() {
+// 	Backlog := "true"
+// 	StarOffer := ""
+// 	Branch := ""
+// 	Gender := ""
+// 	CgpaCond := ""
+// 	//CgpaCond := "GreaterThan"
+// 	Cgpa := "5"
+// 	//Perc10thCond := ""
+// 	Perc10thCond := "GreaterThan"
+// 	Perc10th := "30"
+// 	//Perc12thCond := ""
+// 	Perc12thCond := "GreaterThan"
+// 	Perc12th := "90"
 
-	sendNotification("JPMC", Backlog, StarOffer, Branch, Gender, CgpaCond, Cgpa, Perc10thCond, Perc10th, Perc12thCond, Perc12th)
+// 	SendNotification("link", "JPMC", Backlog, StarOffer, Branch, Gender, CgpaCond, Cgpa, Perc10thCond, Perc10th, Perc12thCond, Perc12th)
 
-}
+// }

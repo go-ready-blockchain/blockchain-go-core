@@ -5,7 +5,7 @@ import (
 	"net/smtp"
 )
 
-func sendEmail(subject string, studentName string, companyName string, message string, To string) {
+func sendEmail(subject string, studentName string, Usn string, companyName string, message string, To string) {
 	from := "placementblk@gmail.com"
 	pass := "consensusproject"
 	msg := "From: " + from + "\n" +
@@ -13,7 +13,8 @@ func sendEmail(subject string, studentName string, companyName string, message s
 		"Subject: " + subject + " \n\n" +
 		"Hi " + studentName + "\n\n" +
 		companyName + " is visiting your campus. You fit the eligibility criteria set by the company." + "\n" +
-		"If you wish to register for this company, click on this link: " + message + "\n" +
+		"If you wish to register for this company,\nHit this link: " + message + "\n" +
+		"Body:\n{\napproval:true/false,\nname:" + Usn + ",\ncompany:" + companyName + "\n}" + "\n\n" +
 		"Thanks and Regards, \nPlacement Dept"
 
 	err := smtp.SendMail("smtp.gmail.com:587",

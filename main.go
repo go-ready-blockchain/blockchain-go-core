@@ -12,6 +12,7 @@ import (
 	"github.com/go-ready-blockchain/blockchain-go-core/Init"
 	"github.com/go-ready-blockchain/blockchain-go-core/blockchain"
 	"github.com/go-ready-blockchain/blockchain-go-core/company"
+	"github.com/go-ready-blockchain/blockchain-go-core/notification"
 )
 
 func printUsage() {
@@ -153,7 +154,42 @@ func calladdCompany(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(message))
 }
 
+func sendNotification(w http.ResponseWriter, r *http.Request) {
+
+	type jsonBody struct {
+		Company      string `json:"company"`
+		Backlog      string `json:"backlog"`
+		StarOffer    string `json:"starOffer"`
+		Branch       string `json:"branch"`
+		Gender       string `json:"gender"`
+		CgpaCond     string `json:"cgpaCond"`
+		Cgpa         string `json:"cgpa"`
+		Perc10thCond string `json:"perc10thCond"`
+		Perc10th     string `json:"perc10th"`
+		Perc12thCond string `json:"perc12thCond"`
+		Perc12th     string `json:"perc12th"`
+	}
+	decoder := json.NewDecoder(r.Body)
+	var b jsonBody
+	if err := decoder.Decode(&b); err != nil {
+		log.Fatal(err)
+	}
+
+	message := ""
+	flag := notification.SendNotification("localhost:5000", b.Company, b.Backlog, b.StarOffer, b.Branch, b.Gender, b.CgpaCond, b.Cgpa, b.Perc10thCond, b.Perc10th, b.Perc12thCond, b.Perc12th)
+
+	if flag == true {
+		message = "Notification sent successfully to Students!"
+	} else {
+		message = "Sending Notification to Student Failed!"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(message))
+}
+
 func callrequestBlock(w http.ResponseWriter, r *http.Request) {
+
 	type jsonBody struct {
 		Name    string `json:"name"`
 		Company string `json:"company"`
@@ -257,11 +293,12 @@ func callprintUsage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	notification.test_main()
+	//notification.Test_main()
 	port := "5000"
 	http.HandleFunc("/createBlockChain", callcreateBlockChain)
 	http.HandleFunc("/student", calladdStudent)
 	http.HandleFunc("/company", calladdCompany)
+	http.HandleFunc("/send", sendNotification)
 	http.HandleFunc("/request", callrequestBlock)
 	http.HandleFunc("/verify-AcademicDept", callverificationByAcademicDept)
 	http.HandleFunc("/verify-PlacementDept", callverificationByPlacementDept)
@@ -269,5 +306,5 @@ func main() {
 	http.HandleFunc("/print", callprintChain)
 	http.HandleFunc("/usage", callprintUsage)
 	fmt.Printf("Server listening on localhost:%s\n", port)
-	//http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
 }
