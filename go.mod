@@ -7,6 +7,7 @@ require (
 	github.com/aws/aws-sdk-go v1.30.9
 	github.com/dgraph-io/badger v1.5.4
 	github.com/dgryski/go-farm v0.0.0-20180109070241-2de33835d102 // indirect
+	github.com/fitquick/dynamodb-examples v0.0.0-20170404215933-c4f9e8b3181d
 	github.com/golang/protobuf v1.2.0 // indirect
 	golang.org/x/sys v0.0.0-20200409092240-59c9f1ba88fa // indirect
 )

@@ -17,9 +17,9 @@ type Item struct {
 	Name      string
 	Gender    string
 	Dob       string
-	Perc10th  string
-	Perc12th  string
-	Cgpa      string
+	Perc10th  float32
+	Perc12th  float32
+	Cgpa      float32
 	Backlog   bool
 	Email     string
 	Mobile    string
@@ -192,21 +192,14 @@ func GetFromBLOCKCHAIN(hash []byte) []byte {
 	return item.Block
 
 }
-func StoreStudentData(usn string, branch string, name string, gender string, dob string, perc10th string, perc12th string, cgpa string, backlog bool, email string, mobile string, staroffer bool) {
-	type Item struct {
-		Usn       string
-		Branch    string
-		Name      string
-		Gender    string
-		Dob       string
-		Perc10th  string
-		Perc12th  string
-		Cgpa      string
-		Backlog   bool
-		Email     string
-		Mobile    string
-		StarOffer bool
-	}
+func StoreStudentData(usn string, branch string, name string, gender string, dob string, perc10th float32, perc12th float32, cgpa float32, backlog bool, email string, mobile string, staroffer bool) {
+	// cgpa64, _ := strconv.ParseFloat(cgpastring, 32)
+	// cgpa := float32(cgpa64)
+	// perc10th64, _ := strconv.ParseFloat(perc10thstring, 32)
+	// perc10th := float32(perc10th64)
+	// perc12th64, _ := strconv.ParseFloat(perc12thstring, 32)
+	// perc12th := float32(perc12th64)
+
 	sess, _ := session.NewSession(&aws.Config{
 
 		Region: aws.String("us-east-1"), DisableSSL: aws.Bool(true),

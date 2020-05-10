@@ -31,7 +31,7 @@ func createBlockChain() {
 	fmt.Println("BlockChain Initialized!")
 }
 
-func addStudent(usn string, branch string, name string, gender string, dob string, perc10th string, perc12th string, cgpa string, backlog bool, email string, mobile string, staroffer bool) {
+func addStudent(usn string, branch string, name string, gender string, dob string, perc10th float32, perc12th float32, cgpa float32, backlog bool, email string, mobile string, staroffer bool) {
 	Init.InitStudentNode(usn, branch, name, gender, dob, perc10th, perc12th, cgpa, backlog, email, mobile, staroffer)
 	fmt.Println("Student Added!")
 
@@ -116,9 +116,9 @@ func calladdStudent(w http.ResponseWriter, r *http.Request) {
 		Name      string `json:"Name"`
 		Gender    string `json:"Gender"`
 		Dob       string `json:"Dob"`
-		Perc10th  string `json:"Perc10th"`
-		Perc12th  string `json:"Perc12th"`
-		Cgpa      string `json:"Cgpa"`
+		Perc10th  float32 `json:"Perc10th"`
+		Perc12th  float32 `json:"Perc12th"`
+		Cgpa      float32 `json:"Cgpa"`
 		Backlog   bool   `json:"Backlog"`
 		Email     string `json:"Email"`
 		Mobile    string `json:"Mobile"`

@@ -25,7 +25,7 @@ func InitCompanyNode(company string) {
 	security.GenerateCompanyKeys(company)
 }
 
-func InitStudentNode(usn string, branch string, name string, gender string, dob string, perc10th string, perc12th string, cgpa string, backlog bool, email string, mobile string, staroffer bool) {
+func InitStudentNode(usn string, branch string, name string, gender string, dob string, perc10th float32, perc12th float32, cgpa float32, backlog bool, email string, mobile string, staroffer bool) {
 
 	security.GenerateStudentKeys(usn)
 

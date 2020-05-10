@@ -8,18 +8,18 @@ import (
 )
 
 type Student struct {
-	Usn       string `json:"Usn"`
-	Branch    string `json:"Branch"`
-	Name      string `json:"Name"`
-	Gender    string `json:"Gender"`
-	Dob       string `json:"Dob"`
-	Perc10th  string `json:"Perc10th"`
-	Perc12th  string `json:"Perc12th"`
-	Cgpa      string `json:"Cgpa"`
-	Backlog   bool   `json:"Backlog"`
-	Email     string `json:"Email"`
-	Mobile    string `json:"Mobile"`
-	StarOffer bool   `json:"StarOffer"`
+	Usn       string  `json:"Usn"`
+	Branch    string  `json:"Branch"`
+	Name      string  `json:"Name"`
+	Gender    string  `json:"Gender"`
+	Dob       string  `json:"Dob"`
+	Perc10th  float32 `json:"Perc10th"`
+	Perc12th  float32 `json:"Perc12th"`
+	Cgpa      float32 `json:"Cgpa"`
+	Backlog   bool    `json:"Backlog"`
+	Email     string  `json:"Email"`
+	Mobile    string  `json:"Mobile"`
+	StarOffer bool    `json:"StarOffer"`
 }
 
 func EncodeToBytes(s *Student) []byte {
@@ -33,7 +33,7 @@ func DecodeToStruct(sbytes []byte) *Student {
 	return result
 }
 
-func EnterStudentData(usn string, branch string, name string, gender string, dob string, perc10th string, perc12th string, cgpa string, backlog bool, email string, mobile string, staroffer bool) *Student {
+func EnterStudentData(usn string, branch string, name string, gender string, dob string, perc10th float32, perc12th float32, cgpa float32, backlog bool, email string, mobile string, staroffer bool) *Student {
 	s := &Student{usn, branch, name, gender, dob, perc10th, perc12th, cgpa, backlog, email, mobile, staroffer}
 	return s
 }

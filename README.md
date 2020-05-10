@@ -13,7 +13,7 @@
 ####    `go run main.go createBlockChain`
 
 #### To Add a New Student
-####    `go run main.go student -usn "USN" -branch "BRANCH" -name "NAME" -gender "GENDER" -dob "DOB" -cgpa "CGPA" -perc10th "PERC10TH" -perc12th "PERC12TH"  -backlog=false -email "EMAIL" -mobile "MOBILE" -staroffer=true`
+####    `go run main.go student -usn "USN" -branch "BRANCH" -name "NAME" -gender "GENDER" -dob "DOB" -cgpa CGPA -perc10th PERC10TH -perc12th PERC12TH  -backlog=false -email "EMAIL" -mobile "MOBILE" -staroffer=true`
 
 #### To Add a new Companu    
 ####    `go run main.go company -name COMPANY`
