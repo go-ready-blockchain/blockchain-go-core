@@ -47,8 +47,20 @@ func CreateNumericCondition(attribute string, cond string, valuestring string) e
 	return expression.Name("Email").AttributeExists()
 
 }
+func CreateListCondition(attribute string, values []string) expression.ConditionBuilder {
+	if values[0] == "" {
+		return expression.Name("Email").AttributeExists()
+	}
+	cond := expression.Name(attribute).Equal(expression.Value(values[0]))
+	for i := 1; i < len(values); i++ {
+		if values[i] != "" {
+			cond = cond.Or(expression.Name(attribute).Equal(expression.Value(values[i])))
+		}
+	}
+	return cond
+}
 
-func CreateCondition(Backlog string, StarOffer string, Branch string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) expression.ConditionBuilder {
+func CreateCondition(Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) expression.ConditionBuilder {
 
 	cond := expression.Name("Email").AttributeExists()
 	//cond := expression.Name("Email").NotEqual(expression.Value(""))
@@ -61,8 +73,8 @@ func CreateCondition(Backlog string, StarOffer string, Branch string, Gender str
 		b, _ := strconv.ParseBool(StarOffer)
 		cond = cond.And(expression.Name("StarOffer").Equal(expression.Value(b)))
 	}
-	if Branch != "" {
-		cond = cond.And(expression.Name("Branch").Equal(expression.Value(Branch)))
+	if len(Branch) != 0 {
+		cond = cond.And(CreateListCondition("Branch", Branch))
 	}
 	if Gender != "" {
 		cond = cond.And(expression.Name("Gender").Equal(expression.Value(Gender)))
@@ -79,7 +91,7 @@ func CreateCondition(Backlog string, StarOffer string, Branch string, Gender str
 
 	return cond
 }
-func ApplyFilter(Backlog string, StarOffer string, Branch string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) []EmailItem {
+func ApplyFilter(Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) []EmailItem {
 	// create an aws session
 	sess, _ := session.NewSession(&aws.Config{
 

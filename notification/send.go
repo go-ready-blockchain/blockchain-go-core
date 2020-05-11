@@ -2,9 +2,9 @@ package notification
 
 import "fmt"
 
-func SendNotification(link string, companyName string, Backlog string, StarOffer string, Branch string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) bool {
+func SendNotification(link string, companyName string, Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) bool {
 	emailitems := ApplyFilter(Backlog, StarOffer, Branch, Gender, CgpaCond, Cgpa, Perc10thCond, Perc10th, Perc12thCond, Perc12th)
-	//fmt.Println(emailitems)
+	fmt.Println(emailitems)
 
 	for _, emailitem := range emailitems {
 		email := emailitem.Email
