@@ -176,7 +176,7 @@ func sendNotification(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	message := ""
-	flag := notification.SendNotification("localhost:8081/hnadlerequest", b.Company, b.Backlog, b.StarOffer, b.Branch, b.Gender, b.CgpaCond, b.Cgpa, b.Perc10thCond, b.Perc10th, b.Perc12thCond, b.Perc12th)
+	flag := notification.SendNotification("http://localhost:5000", b.Company, b.Backlog, b.StarOffer, b.Branch, b.Gender, b.CgpaCond, b.Cgpa, b.Perc10thCond, b.Perc10th, b.Perc12thCond, b.Perc12th)
 
 	if flag == true {
 		message = "Notification sent successfully to Students!"

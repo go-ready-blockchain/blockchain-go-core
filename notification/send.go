@@ -10,7 +10,9 @@ func SendNotification(link string, companyName string, Backlog string, StarOffer
 		usn := emailitem.Usn
 		name := emailitem.Name
 		fmt.Println(email, usn, name)
-		sendEmail("Request for Student Data", name, usn, companyName, link, email)
+		acceptlink := link + "/handlerequest?" + "approval=" + "true" + "&company=" + companyName + "&name=" + usn
+		rejectlink := link + "/handlerequest?" + "approval=" + "false" + "&company=" + companyName + "&name=" + usn
+		sendEmail("Request for Student Data", name, usn, companyName, acceptlink, rejectlink, email)
 
 	}
 	return true
