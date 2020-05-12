@@ -12,9 +12,9 @@ func sendEmail(subject string, studentName string, Usn string, companyName strin
 		"To: " + To + "\n" +
 		"Subject: " + subject + " \n\n" +
 		"Hi " + studentName + "\n\n" +
-		companyName + " is visiting your campus. You fit the eligibility criteria set by the company." + "\n" +
-		"If you wish to register for this company,\nHit this link: " + acceptlink + "\n" +
-		"If you wish to register for this company,\nHit this link: " + rejectlink + "\n" +
+		companyName + " is visiting your campus. You fit the eligibility criteria set by the company." + "\n\n" +
+		"If you wish to register for this company,\nHit this link: " + acceptlink + "\n\n" +
+		"If you wish to reject this company,\nHit this link: " + rejectlink + "\n\n" +
 		"Thanks and Regards, \nPlacement Dept"
 
 	err := smtp.SendMail("smtp.gmail.com:587",
