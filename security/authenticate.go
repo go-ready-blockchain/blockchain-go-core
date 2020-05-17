@@ -12,6 +12,7 @@ import (
 	"os"
 
 	"github.com/go-ready-blockchain/blockchain-go-core/utils"
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 type User struct {
@@ -27,6 +28,7 @@ type UserBytes struct {
 }
 
 func GetPrivateandPublicKey(Name string) *User {
+	logger.WriteToFile(logger.FileName, "Generating Private and Public Keys")
 	privateKey, err := rsa.GenerateKey(rand.Reader, 4096)
 	if err != nil {
 		fmt.Println(err.Error)
@@ -105,6 +107,7 @@ func BytesToPublicKey(pub []byte) *rsa.PublicKey {
 	return key
 }
 func GetUserFromDB(name string) *User {
+	logger.WriteToFile(logger.FileName, "Fetching User from DB")
 	var ubytes []byte = []byte("{UserBytes}")
 	ubytes = utils.GetUserBytesFromDB(name)
 	userbytes := &UserBytes{}
@@ -114,7 +117,7 @@ func GetUserFromDB(name string) *User {
 
 }
 func PutUserIntoDB(user *User) {
-
+	logger.WriteToFile(logger.FileName, "Stroing User to DB")
 	userbytes := &UserBytes{user.Name, PrivateKeyToBytes(user.PrivateKey), PublicKeyToBytes(user.PublicKey)}
 	ubytes, _ := json.Marshal(userbytes)
 
@@ -137,6 +140,7 @@ func PutPublicKeyIntoDB(publickey *rsa.PublicKey, name string) {
 }
 
 func EncryptMessage(message []byte, receiverPublicKey *rsa.PublicKey) []byte {
+	logger.WriteToFile(logger.FileName, "Encrytping the message")
 	label := []byte("")
 	hash := sha256.New()
 	ciphertext, err := rsa.EncryptOAEP(
@@ -154,6 +158,7 @@ func EncryptMessage(message []byte, receiverPublicKey *rsa.PublicKey) []byte {
 }
 
 func DecryptMessage(ciphertext []byte, receiverPrivateKey *rsa.PrivateKey) ([]byte, bool) {
+	logger.WriteToFile(logger.FileName, "Decrypting the message")
 	label := []byte("")
 	hash := sha256.New()
 	message, err := rsa.DecryptOAEP(

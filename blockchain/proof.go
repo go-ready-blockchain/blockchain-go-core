@@ -8,6 +8,8 @@ import (
 	"log"
 	"math"
 	"math/big"
+
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 // Take the data from the block
@@ -55,6 +57,7 @@ func (pow *ProofOfWork) InitData(nonce int) []byte {
 }
 
 func (pow *ProofOfWork) Run() (int, []byte) {
+	logger.WriteToFile(logger.FileName, "Running Proof Of Work")
 	fmt.Println("Running Proof Of Work Algorithm")
 	var intHash big.Int
 	var hash [32]byte
@@ -81,6 +84,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 }
 
 func (pow *ProofOfWork) Validate() bool {
+	logger.WriteToFile(logger.FileName, "Validating Proof Of Work")
 	var intHash big.Int
 
 	data := pow.InitData(pow.Block.Nonce)

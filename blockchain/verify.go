@@ -7,16 +7,18 @@ import (
 
 	"github.com/go-ready-blockchain/blockchain-go-core/security"
 	"github.com/go-ready-blockchain/blockchain-go-core/utils"
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 type Verification struct {
 	Verified      string               `json:"Verified"`
-	Timestamps    map[string]time.Time `json:Timestamps"`
-	Verifications map[string]string    `json:Verifications"`
+	Timestamps    map[string]time.Time `json:"Timestamps"`
+	Verifications map[string]string    `json:"Verifications"`
 }
 
 func AcademicDeptVerification(name string, company string) bool {
 
+	logger.WriteToFile(logger.FileName, "Academic Dept Verification Initiated")
 	block := GetBlockFromBuffer(name, company)
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB("AcademicDept").PrivateKey)
@@ -46,13 +48,14 @@ func AcademicDeptVerification(name string, company string) bool {
 	block.Verification = EncodeToBytes(v)
 	block.StudentData = security.EncryptMessage(studentdata, security.GetPublicKeyFromDB("PlacementDept"))
 	block.Signature = security.PSSSignature(studentdata, security.GetUserFromDB("AcademicDept").PrivateKey)
-
+	logger.WriteToFile(logger.FileName, "Academic Dept Verification Completed")
 	PutBlockIntoBuffer(block, name, company)
 	return true
 }
 
 func PlacementDeptVerification(name string, company string) bool {
 
+	logger.WriteToFile(logger.FileName, "Placement Dept Verification Initiated")
 	block := GetBlockFromBuffer(name, company)
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB("PlacementDept").PrivateKey)
@@ -88,11 +91,13 @@ func PlacementDeptVerification(name string, company string) bool {
 	//Add block to blockchain as a transaction
 
 	AddBlock(block)
+	logger.WriteToFile(logger.FileName, "Placement Dept Verification Completed")
 	fmt.Println("Validation successfully completed.\nCompany can retrieve the data")
 	return true
 }
 
 func InitVerification() *Verification {
+	logger.WriteToFile(logger.FileName, "Verification Structure Initiated")
 	v := &Verification{"", make(map[string]time.Time), make(map[string]string)}
 
 	v.Verified = "Not Done Yet"
@@ -108,7 +113,7 @@ func InitVerification() *Verification {
 }
 
 func CheckIfVerifiedByAll(v *Verification) bool {
-
+	
 	if v.Verified == "True" {
 		return true
 	} else if v.Verified == "Not Done Yet" {

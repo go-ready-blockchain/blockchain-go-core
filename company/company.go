@@ -7,10 +7,12 @@ import (
 	"github.com/go-ready-blockchain/blockchain-go-core/security"
 	"github.com/go-ready-blockchain/blockchain-go-core/student"
 	"github.com/go-ready-blockchain/blockchain-go-core/utils"
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 func RetrieveData(name string, company string) bool {
 
+	logger.WriteToFile(logger.FileName, "Company Retriving Data")
 	block := blockchain.GetBlockFromBuffer(name, company)
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB(company).PrivateKey)
