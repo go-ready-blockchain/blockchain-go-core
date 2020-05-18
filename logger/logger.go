@@ -45,6 +45,7 @@ func WriteToFile(name string, body string) bool {
 
 	if err != nil {
 		fmt.Println("Error opening file")
+		fmt.Println(err)
 		return false
 	}
 	defer file.Close()
