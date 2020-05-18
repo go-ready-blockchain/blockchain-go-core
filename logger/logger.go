@@ -27,7 +27,7 @@ type Logger struct {
 	Line      int       `json:"Line"`
 	Timestamp time.Time `json:"Timestamp"`
 	Message   string    `json:"Message"`
-	Node 			string 		`json:"Node"`
+	Node      string    `json:"Node"`
 }
 
 // CreateFile is used to create a new file
@@ -46,8 +46,9 @@ func WriteToFile(body string) bool {
 	file, err := os.OpenFile(FileName, os.O_APPEND|os.O_WRONLY, 0644)
 
 	if err != nil {
-		fmt.Println("Error opening file")
+		fmt.Println("Trying to print error")
 		fmt.Println(err)
+		fmt.Println("Error opening file")
 		return false
 	}
 	defer file.Close()
@@ -67,7 +68,7 @@ func WriteToFile(body string) bool {
 	value, _ := json.Marshal(valueLogger)
 	finalLog := string(value)
 	fmt.Println(finalLog)
-	
+
 	finalLog += "\n"
 	if _, err := file.WriteString(finalLog); err != nil {
 		fmt.Println("Error writing file")
