@@ -14,7 +14,9 @@ import (
 )
 
 var (
+	// FileName stores log file name
 	FileName string
+	// NodeName stores node name for log
 	NodeName string
 )
 
