@@ -67,9 +67,8 @@ func WriteToFile(body string) bool {
 
 	value, _ := json.Marshal(valueLogger)
 	finalLog := string(value)
-	fmt.Println(finalLog)
-
 	finalLog += "\n"
+
 	if _, err := file.WriteString(finalLog); err != nil {
 		fmt.Println("Error writing file")
 		return false
