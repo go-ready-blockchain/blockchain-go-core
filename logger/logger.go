@@ -29,8 +29,8 @@ type Logger struct {
 }
 
 // CreateFile is used to create a new file
-func CreateFile(name string) bool {
-	file, err := os.Create(name)
+func CreateFile() bool {
+	file, err := os.Create(FileName)
 	if err != nil {
 		fmt.Println("Error creating file")
 		return false
@@ -40,8 +40,8 @@ func CreateFile(name string) bool {
 }
 
 // WriteToFile is to write data into a file
-func WriteToFile(name string, body string) bool {
-	file, err := os.OpenFile(name, os.O_APPEND|os.O_WRONLY, 0644)
+func WriteToFile(body string) bool {
+	file, err := os.OpenFile(FileName, os.O_APPEND|os.O_WRONLY, 0644)
 
 	if err != nil {
 		fmt.Println("Error opening file")
@@ -76,8 +76,8 @@ func WriteToFile(name string, body string) bool {
 }
 
 // UploadToS3Bucket uploads the file to specified S3 bucket
-func UploadToS3Bucket(name string, dir string) bool {
-	file, err := os.Open(name)
+func UploadToS3Bucket(dir string) bool {
+	file, err := os.Open(FileName)
 
 	if err != nil {
 		fmt.Println("Error opening file")
@@ -93,7 +93,7 @@ func UploadToS3Bucket(name string, dir string) bool {
 
 	result, err := svc.Upload(&s3manager.UploadInput{
 		Bucket: aws.String("go-ready-blockchain"),
-		Key:    aws.String(dir + "/" + filepath.Base(name)),
+		Key:    aws.String(dir + "/" + filepath.Base(FileName)),
 		Body:   file,
 	})
 

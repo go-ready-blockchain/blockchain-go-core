@@ -18,7 +18,7 @@ type Verification struct {
 
 func AcademicDeptVerification(name string, company string) bool {
 
-	logger.WriteToFile(logger.FileName, "Academic Dept Verification Initiated")
+	logger.WriteToFile("Academic Dept Verification Initiated")
 	block := GetBlockFromBuffer(name, company)
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB("AcademicDept").PrivateKey)
@@ -48,14 +48,14 @@ func AcademicDeptVerification(name string, company string) bool {
 	block.Verification = EncodeToBytes(v)
 	block.StudentData = security.EncryptMessage(studentdata, security.GetPublicKeyFromDB("PlacementDept"))
 	block.Signature = security.PSSSignature(studentdata, security.GetUserFromDB("AcademicDept").PrivateKey)
-	logger.WriteToFile(logger.FileName, "Academic Dept Verification Completed")
+	logger.WriteToFile("Academic Dept Verification Completed")
 	PutBlockIntoBuffer(block, name, company)
 	return true
 }
 
 func PlacementDeptVerification(name string, company string) bool {
 
-	logger.WriteToFile(logger.FileName, "Placement Dept Verification Initiated")
+	logger.WriteToFile("Placement Dept Verification Initiated")
 	block := GetBlockFromBuffer(name, company)
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB("PlacementDept").PrivateKey)
@@ -91,13 +91,13 @@ func PlacementDeptVerification(name string, company string) bool {
 	//Add block to blockchain as a transaction
 
 	AddBlock(block)
-	logger.WriteToFile(logger.FileName, "Placement Dept Verification Completed")
+	logger.WriteToFile("Placement Dept Verification Completed")
 	fmt.Println("Validation successfully completed.\nCompany can retrieve the data")
 	return true
 }
 
 func InitVerification() *Verification {
-	logger.WriteToFile(logger.FileName, "Verification Structure Initiated")
+	logger.WriteToFile("Verification Structure Initiated")
 	v := &Verification{"", make(map[string]time.Time), make(map[string]string)}
 
 	v.Verified = "Not Done Yet"

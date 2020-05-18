@@ -57,7 +57,7 @@ func (pow *ProofOfWork) InitData(nonce int) []byte {
 }
 
 func (pow *ProofOfWork) Run() (int, []byte) {
-	logger.WriteToFile(logger.FileName, "Running Proof Of Work")
+	logger.WriteToFile("Running Proof Of Work")
 	fmt.Println("Running Proof Of Work Algorithm")
 	var intHash big.Int
 	var hash [32]byte
@@ -84,7 +84,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 }
 
 func (pow *ProofOfWork) Validate() bool {
-	logger.WriteToFile(logger.FileName, "Validating Proof Of Work")
+	logger.WriteToFile("Validating Proof Of Work")
 	var intHash big.Int
 
 	data := pow.InitData(pow.Block.Nonce)

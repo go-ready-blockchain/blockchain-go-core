@@ -12,7 +12,7 @@ import (
 
 func RetrieveData(name string, company string) bool {
 
-	logger.WriteToFile(logger.FileName, "Company Retriving Data")
+	logger.WriteToFile("Company Retriving Data")
 	block := blockchain.GetBlockFromBuffer(name, company)
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB(company).PrivateKey)

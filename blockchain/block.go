@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"log"
+
 	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
@@ -25,12 +26,12 @@ func CreateBlock(data []byte, signature []byte, company []byte, verification []b
 	block.Hash = hash[:]
 	block.Nonce = nonce
 
-	logger.WriteToFile(logger.FileName, "Creating Block for PoW")
+	logger.WriteToFile("Creating Block for PoW")
 	return block
 }
 
 func InitFirstBlock() *Block {
-	logger.WriteToFile(logger.FileName, "Creating Genesis Block for Blockchain")
+	logger.WriteToFile("Creating Genesis Block for Blockchain")
 	return CreateBlock([]byte("Genesis Block"), []byte(""), []byte(""), []byte(""), []byte{})
 }
 
@@ -42,7 +43,7 @@ func (b *Block) Serialize() []byte {
 
 	Handle(err)
 
-	logger.WriteToFile(logger.FileName, "Serialising the given Block")
+	logger.WriteToFile("Serialising the given Block")
 	return res.Bytes()
 }
 
@@ -53,7 +54,7 @@ func Deserialize(data []byte) *Block {
 
 	Handle(err)
 
-	logger.WriteToFile(logger.FileName, "Deserialising the given Block")
+	logger.WriteToFile("Deserialising the given Block")
 	return &block
 }
 
