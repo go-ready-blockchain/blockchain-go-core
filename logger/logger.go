@@ -46,8 +46,6 @@ func WriteToFile(body string) bool {
 	file, err := os.OpenFile(FileName, os.O_APPEND|os.O_WRONLY, 0644)
 
 	if err != nil {
-		fmt.Println("Trying to print error")
-		fmt.Println(err)
 		fmt.Println("Error opening file")
 		return false
 	}
@@ -107,4 +105,13 @@ func UploadToS3Bucket(dir string) bool {
 	fmt.Println(result)
 
 	return true
+}
+
+// DeleteFile is used to delete log file after upload
+func DeleteFile() {
+	err := os.Remove(FileName)
+
+	if err != nil {
+		fmt.Println("Error Deleting File")
+	}
 }
