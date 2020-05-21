@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 	"github.com/go-ready-blockchain/blockchain-go-core/security"
 	"github.com/go-ready-blockchain/blockchain-go-core/utils"
-	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 type Verification struct {
@@ -23,6 +23,7 @@ func AcademicDeptVerification(name string, company string) bool {
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB("AcademicDept").PrivateKey)
 	if dflag == false {
+		logger.WriteToFile("Decrytion of Message Failed")
 		fmt.Println("Decrytion of Message Failed")
 		utils.DeleteBlockFromBuffer(name, company)
 		return false
@@ -30,6 +31,7 @@ func AcademicDeptVerification(name string, company string) bool {
 
 	sflag := security.VerifyPSSSignature(security.GetPublicKeyFromDB(name), block.Signature, studentdata)
 	if sflag == false {
+		logger.WriteToFile("Signature Verification Failed, Authentication Failed")
 		fmt.Println("Signature Verification Failed, Authentication Failed")
 		utils.DeleteBlockFromBuffer(name, company)
 		return false
@@ -38,6 +40,7 @@ func AcademicDeptVerification(name string, company string) bool {
 	block.StudentData = studentdata
 	v, vflag := ValidationByAcademicDept(DecodeToStruct(block.Verification), block)
 	if vflag == false {
+		logger.WriteToFile("Validation By Academic Dept Failed")
 		fmt.Println("Validation By Academic Dept Failed")
 		utils.DeleteBlockFromBuffer(name, company)
 		return false
@@ -60,6 +63,7 @@ func PlacementDeptVerification(name string, company string) bool {
 
 	studentdata, dflag := security.DecryptMessage(block.StudentData, security.GetUserFromDB("PlacementDept").PrivateKey)
 	if dflag == false {
+		logger.WriteToFile("Decrytion of Message Failed")
 		fmt.Println("Decrytion of Message Failed")
 		utils.DeleteBlockFromBuffer(name, company)
 		return false
@@ -67,6 +71,7 @@ func PlacementDeptVerification(name string, company string) bool {
 
 	sflag := security.VerifyPSSSignature(security.GetPublicKeyFromDB("AcademicDept"), block.Signature, studentdata)
 	if sflag == false {
+		logger.WriteToFile("Signature Verification Failed, Authentication Failed")
 		fmt.Println("Signature Verification Failed, Authentication Failed")
 		utils.DeleteBlockFromBuffer(name, company)
 		return false
@@ -75,6 +80,7 @@ func PlacementDeptVerification(name string, company string) bool {
 	block.StudentData = studentdata
 	v, vflag := ValidationByPlacementDept(DecodeToStruct(block.Verification), block)
 	if vflag == false {
+		logger.WriteToFile("Validation By Academic Dept Failed")
 		fmt.Println("Validation By Placement Dept Failed")
 		utils.DeleteBlockFromBuffer(name, company)
 		return false
@@ -113,7 +119,7 @@ func InitVerification() *Verification {
 }
 
 func CheckIfVerifiedByAll(v *Verification) bool {
-	
+	logger.WriteToFile("Verification Status Check")
 	if v.Verified == "True" {
 		return true
 	} else if v.Verified == "Not Done Yet" {
@@ -125,7 +131,7 @@ func CheckIfVerifiedByAll(v *Verification) bool {
 }
 
 func CheckIfVerifiedByAcademicDept(v *Verification) bool {
-
+	logger.WriteToFile("Check if Verified By Academic Dept")
 	if v.Verifications["Academic Dept"] == "True" {
 		return true
 	} else if v.Verifications["Academic Dept"] == "Not Done Yet" {
@@ -137,7 +143,7 @@ func CheckIfVerifiedByAcademicDept(v *Verification) bool {
 }
 
 func ValidationByAcademicDept(v *Verification, block *Block) (*Verification, bool) {
-
+	logger.WriteToFile("Validation By Academic Dept")
 	if CheckIfVerifiedByAll(v) {
 		fmt.Println("Already Verified")
 		return v, true
@@ -147,13 +153,16 @@ func ValidationByAcademicDept(v *Verification, block *Block) (*Verification, boo
 	pow := NewProof(block)
 	vflag := pow.Validate()
 	if vflag == false {
-		fmt.Println("Placement Dept Validation of Proof Of Work Failed")
+		logger.WriteToFile("Validation By Academic Dept of Proof of Work Failed ")
+		fmt.Println("Academic Dept Validation of Proof Of Work Failed")
 		return v, false
 	}
+	logger.WriteToFile("Academic Dept Successfully completed Validation of Proof Of Work!")
 	fmt.Println("Academic Dept Successfully completed Validation of Proof Of Work!")
 
 	tflag := ProofOfElapsedTime(v.Timestamps["Created At"])
 	if tflag == false {
+		logger.WriteToFile("Proof Of Elapsed Time failed")
 		fmt.Println("Proof Of Elapsed Time failed")
 		return v, false
 	}
@@ -161,17 +170,19 @@ func ValidationByAcademicDept(v *Verification, block *Block) (*Verification, boo
 	v.Verifications["Academic Dept"] = "True"
 	v.Timestamps["Academic Dept"] = time.Now()
 
+	logger.WriteToFile("Academic Dept Successfully completed Validation")
 	return v, true
 }
 
 func ValidationByPlacementDept(v *Verification, block *Block) (*Verification, bool) {
-
+	logger.WriteToFile("Validation By Placement Dept")
 	if CheckIfVerifiedByAll(v) {
 		fmt.Println("Already Verified")
 		return v, true
 	}
 
 	if CheckIfVerifiedByAcademicDept(v) == false {
+		logger.WriteToFile("Verification Not Yet Done by Academic Dept")
 		fmt.Println("Verification Not Yet Done by Academic Dept")
 		return v, false
 	}
@@ -180,13 +191,16 @@ func ValidationByPlacementDept(v *Verification, block *Block) (*Verification, bo
 	pow := NewProof(block)
 	vflag := pow.Validate()
 	if vflag == false {
+		logger.WriteToFile("Placement Dept Validation of Proof Of Work Failed")
 		fmt.Println("Placement Dept Validation of Proof Of Work Failed")
 		return v, false
 	}
+	logger.WriteToFile("Placement Dept Successfully completed Validation Proof Of Work!")
 	fmt.Println("Placement Dept Successfully completed Validation Proof Of Work!")
 
 	tflag := ProofOfElapsedTime(v.Timestamps["Created At"])
 	if tflag == false {
+		logger.WriteToFile("Proof Of Elapsed Time failed")
 		fmt.Println("Proof Of Elapsed Time failed")
 		return v, false
 	}
@@ -195,6 +209,7 @@ func ValidationByPlacementDept(v *Verification, block *Block) (*Verification, bo
 	v.Timestamps["Placement Dept"] = time.Now()
 	v.Verified = "True"
 
+	logger.WriteToFile("Placement Dept Successfully completed Validation")
 	return v, true
 }
 
@@ -210,6 +225,7 @@ func DecodeToStruct(vbytes []byte) *Verification {
 }
 
 func ProofOfElapsedTime(creation time.Time) bool {
+	logger.WriteToFile("Proof Of Elapsed Time Initiated")
 	limit := creation.Add(24 * time.Hour) //24 Hr Limit
 	now := time.Now()
 	return now.After(creation) && now.Before(limit)

@@ -31,6 +31,7 @@ type ProofOfWork struct {
 }
 
 func NewProof(b *Block) *ProofOfWork {
+	logger.WriteToFile("Creating new proof")
 	target := big.NewInt(1)
 	target.Lsh(target, uint(256-Difficulty))
 

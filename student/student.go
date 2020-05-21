@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/go-ready-blockchain/blockchain-go-core/security"
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 type Student struct {
@@ -54,7 +55,7 @@ func PrintStudentData(s *Student) {
 }
 
 func GenerateStudentSignature(name string, data []byte) []byte {
-
+	logger.WriteToFile("Generate Student PSS Signature")
 	student := security.GetUserFromDB(name)
 
 	signature := security.PSSSignature(data, student.PrivateKey)
@@ -64,7 +65,7 @@ func GenerateStudentSignature(name string, data []byte) []byte {
 }
 
 func EncryptStudentData(receiver string, data []byte) []byte {
-
+	logger.WriteToFile("Encrypt Student Data")
 	receiverPublicKey := security.GetPublicKeyFromDB(receiver)
 	studentdata := security.EncryptMessage(data, receiverPublicKey)
 

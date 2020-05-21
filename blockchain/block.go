@@ -26,7 +26,7 @@ func CreateBlock(data []byte, signature []byte, company []byte, verification []b
 	block.Hash = hash[:]
 	block.Nonce = nonce
 
-	logger.WriteToFile("Creating Block for PoW")
+	logger.WriteToFile("Created Block for PoW")
 	return block
 }
 

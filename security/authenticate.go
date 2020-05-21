@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/go-ready-blockchain/blockchain-go-core/utils"
 	"github.com/go-ready-blockchain/blockchain-go-core/logger"
+	"github.com/go-ready-blockchain/blockchain-go-core/utils"
 )
 
 type User struct {
@@ -117,22 +117,23 @@ func GetUserFromDB(name string) *User {
 
 }
 func PutUserIntoDB(user *User) {
-	logger.WriteToFile("Stroing User to DB")
+	logger.WriteToFile("Storing User to DB")
 	userbytes := &UserBytes{user.Name, PrivateKeyToBytes(user.PrivateKey), PublicKeyToBytes(user.PublicKey)}
 	ubytes, _ := json.Marshal(userbytes)
 
 	utils.PutUserBytesIntoDB(ubytes)
-
 }
 
 func GetPublicKeyFromDB(name string) *rsa.PublicKey {
+	logger.WriteToFile("Get public key")
 	var publickeybytes []byte = []byte("{PublicKeyBytes}")
 	publickeybytes = utils.GetPublicKeyFromDB(name)
 	publickey := BytesToPublicKey(publickeybytes)
 	return publickey
 }
-func PutPublicKeyIntoDB(publickey *rsa.PublicKey, name string) {
 
+func PutPublicKeyIntoDB(publickey *rsa.PublicKey, name string) {
+	logger.WriteToFile("Store public key")
 	publickeybytes := PublicKeyToBytes(publickey)
 
 	utils.PutPublickeyIntoDB(publickeybytes, name)
@@ -154,6 +155,7 @@ func EncryptMessage(message []byte, receiverPublicKey *rsa.PublicKey) []byte {
 		os.Exit(1)
 	}
 	fmt.Println("Data Encrypted Successfully!")
+	logger.WriteToFile("Data Encrypted Successfully!")
 	return ciphertext
 }
 
@@ -174,10 +176,12 @@ func DecryptMessage(ciphertext []byte, receiverPrivateKey *rsa.PrivateKey) ([]by
 		os.Exit(1)
 	}
 	fmt.Println("Data Decrypted Successfully!")
+	logger.WriteToFile("Data Decrypted Successfully!")
 	return message, true
 }
 
 func PSSSignature(message []byte, privateKey *rsa.PrivateKey) []byte {
+	logger.WriteToFile("Adding PSS Signature")
 	var opts rsa.PSSOptions
 	opts.SaltLength = rsa.PSSSaltLengthAuto
 	PSSmessage := message
@@ -197,10 +201,12 @@ func PSSSignature(message []byte, privateKey *rsa.PrivateKey) []byte {
 		os.Exit(1)
 	}
 	fmt.Println("Signature Generated Successfully!")
+	logger.WriteToFile("Signature Generated Successfully!")
 	return signature
 }
 
 func VerifyPSSSignature(publicKey *rsa.PublicKey, signature []byte, plainText []byte) bool {
+	logger.WriteToFile("Verify PSS Signature")
 	var opts rsa.PSSOptions
 	opts.SaltLength = rsa.PSSSaltLengthAuto
 	PSSmessage := plainText
@@ -217,10 +223,12 @@ func VerifyPSSSignature(publicKey *rsa.PublicKey, signature []byte, plainText []
 	)
 	if err != nil {
 		fmt.Println("Signature Verification Failed")
+		logger.WriteToFile("Signature Verification Failed")
 		return false
 		os.Exit(1)
 	} else {
 		fmt.Println("Signature Verified Successfully!")
+		logger.WriteToFile("Signature Verified Successfully!")
 	}
 	return true
 }
@@ -230,14 +238,15 @@ func GenerateAcademicDeptKeys() {
 	PutUserIntoDB(AcademicDeptKeys)
 	PutPublicKeyIntoDB(AcademicDeptKeys.PublicKey, "AcademicDept")
 	fmt.Println("Generated Public and Private keys for Academic Dept")
-
+	logger.WriteToFile("Generated Public and Private keys for Academic Dept")
 }
+
 func GeneratePlacementDeptKeys() {
 	var PlacementDeptKeys = GetPrivateandPublicKey("PlacementDept")
 	PutUserIntoDB(PlacementDeptKeys)
 	PutPublicKeyIntoDB(PlacementDeptKeys.PublicKey, "PlacementDept")
 	fmt.Println("Generated Public and Private keys for Placement Dept")
-
+	logger.WriteToFile("Generated Public and Private keys for Placement Dept")
 }
 
 func GenerateStudentKeys(name string) {
@@ -245,6 +254,7 @@ func GenerateStudentKeys(name string) {
 	PutUserIntoDB(Student)
 	PutPublicKeyIntoDB(Student.PublicKey, name)
 	fmt.Println("Generated Public and Private keys for Student: ", name)
+	logger.WriteToFile("Generated Public and Private keys for Student: " + name)
 }
 
 func GenerateCompanyKeys(companyname string) {
@@ -252,6 +262,7 @@ func GenerateCompanyKeys(companyname string) {
 	PutUserIntoDB(Company)
 	PutPublicKeyIntoDB(Company.PublicKey, companyname)
 	fmt.Println("Generated Public and Private keys for Company: ", companyname)
+	logger.WriteToFile("Generated Public and Private keys for Company: " + companyname)
 }
 
 // func Test() {

@@ -1,8 +1,12 @@
 package notification
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
+)
 
 func SendNotification(link string, companyName string, Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) bool {
+	logger.WriteToFile("Sending notification for Email")
 	emailitems := ApplyFilter(Backlog, StarOffer, Branch, Gender, CgpaCond, Cgpa, Perc10thCond, Perc10th, Perc12thCond, Perc12th)
 
 	for _, emailitem := range emailitems {

@@ -83,6 +83,7 @@ func InitBlockInBuffer(name string, Company string) {
 
 	PutBlockIntoBuffer(newBlock, name, Company)
 	fmt.Println("Block added to Buffer")
+	logger.WriteToFile("Block Added to Buffer")
 
 }
 

@@ -3,9 +3,12 @@ package notification
 import (
 	"log"
 	"net/smtp"
+
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 func sendEmail(subject string, studentName string, Usn string, companyName string, acceptlink string, rejectlink string, To string) {
+	logger.WriteToFile("Sending Email to Student: " + studentName)
 	from := "placementblk@gmail.com"
 	pass := "consensusproject"
 	msg := "From: " + from + "\n" +
