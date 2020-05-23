@@ -8,23 +8,28 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/go-ready-blockchain/blockchain-go-core/Init"
 	"github.com/go-ready-blockchain/blockchain-go-core/blockchain"
 	"github.com/go-ready-blockchain/blockchain-go-core/company"
+	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 	"github.com/go-ready-blockchain/blockchain-go-core/notification"
 )
 
 func printUsage() {
 	fmt.Println("Usage:")
-	fmt.Println("createBlockChain \tTo Create a new Block Chain")
-	fmt.Println("student -usn USN -branch BRANCH -name NAME -gender GENDER -dob DOB -perc10th PERC10TH -perc12th PERC12TH -cgpa CGPA -backlog BACKLOG -email EMAIL -mobile MOBILE -staroffer STAROFFER\tTo Add a New Student")
-	fmt.Println("company -name NAME \tAddCompany")
-	fmt.Println("request -company COMPANY -student USN \tCompany requests for Student's Data")
-	fmt.Println("verify-AcademicDept -student USN \tAcademicDept Verifies Student's data")
-	fmt.Println("verify-PlacementDept -student USN \tPlacementDept Verifies Student's data")
-	fmt.Println("companyRetrieveData -student USN \tCompany retrieves Student's data")
-	fmt.Println("print - Prints the blocks in the chain")
+	fmt.Println("Make POST request to /createBlockChain \tTo Create a new Block Chain")
+	fmt.Println("Make POST request to /student \tTo Add a New Student")
+	fmt.Println("Make POST request to /company \tTo Add Company")
+	fmt.Println("Make POST request to /send \tTo Send Email to Eligible Students based on Eligibility Criteria")
+	fmt.Println("Make GET request to /handlerequest \tHandle Request and Initiate Creation of Request Block")
+	fmt.Println("Make POST request to /verify-AcademicDept \tAcademicDept Verifies Student's data")
+	fmt.Println("Make POST request to /verify-PlacementDept \tPlacementDept Verifies Student's data")
+	fmt.Println("Make POST request to /companyRetrieveData \tCompany retrieves Student's data")
+	fmt.Println("Make POST request to /print \t Prints the blocks in the chain")
+	fmt.Println("Make POST request to /request-student \t Test Direct Request to Student")
 }
 
 func createBlockChain() {
@@ -206,6 +211,35 @@ func callrequestBlock(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(message))
 }
 
+func handlerequest(w http.ResponseWriter, r *http.Request) {
+	type jsonBody struct {
+		Approval bool   `json:"approval"`
+		Name     string `json:"name"`
+		Company  string `json:"company"`
+	}
+
+	decoder := r.URL.Query()
+	approval := decoder["approval"][0]
+	Approval, _ := strconv.ParseBool(approval)
+	Company := decoder["company"][0]
+	Name := decoder["name"][0]
+	fmt.Println(Approval, Company)
+
+	if !Approval {
+		fmt.Println("Student :", Name, "Rejected Request for Data for Company: ", Company)
+		w.Write([]byte(string("Student : " + Name + " Rejected Request for Data for Company: " + Company)))
+		return
+	}
+	requestBlock(Name, Company)
+
+	message := "Requested Block Initialized!"
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(message))
+
+	fmt.Println("\n\nSending Notification to Academic Dept for Verification\n\n")
+
+}
+
 func callverificationByAcademicDept(w http.ResponseWriter, r *http.Request) {
 	type jsonBody struct {
 		Name    string `json:"name"`
@@ -292,14 +326,24 @@ func callprintUsage(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(message))
 }
 
+func TestLog() {
+
+	name := time.Now().String()
+	logger.FileName = "Test" + name + ".log"
+	logger.NodeName = "All Nodes"
+	logger.CreateFile()
+}
+
 func main() {
 	//notification.Test_main()
+	TestLog()
 	port := "5000"
 	http.HandleFunc("/createBlockChain", callcreateBlockChain)
 	http.HandleFunc("/student", calladdStudent)
 	http.HandleFunc("/company", calladdCompany)
 	http.HandleFunc("/send", sendNotification)
-	http.HandleFunc("/request", callrequestBlock)
+	http.HandleFunc("/request-student", callrequestBlock)
+	http.HandleFunc("/handlerequest", handlerequest)
 	http.HandleFunc("/verify-AcademicDept", callverificationByAcademicDept)
 	http.HandleFunc("/verify-PlacementDept", callverificationByPlacementDept)
 	http.HandleFunc("/companyRetrieveData", callcompanyRetrieveData)
