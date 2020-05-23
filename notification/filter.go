@@ -64,6 +64,15 @@ func CreateListCondition(attribute string, values []string) expression.Condition
 	return cond
 }
 
+func CreateStringCondition(attribute string, value string) expression.ConditionBuilder {
+	return expression.Name(attribute).Equal(expression.Value(value))
+}
+
+func CreateBoolCondition(attribute string, value string) expression.ConditionBuilder {
+	b, _ := strconv.ParseBool(value)
+	return expression.Name(attribute).Equal(expression.Value(b))
+}
+
 func CreateCondition(Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) expression.ConditionBuilder {
 	logger.WriteToFile("Filter Condition Being generated")
 
@@ -71,18 +80,17 @@ func CreateCondition(Backlog string, StarOffer string, Branch []string, Gender s
 	//cond := expression.Name("Email").NotEqual(expression.Value(""))
 
 	if Backlog != "" {
-		b, _ := strconv.ParseBool(Backlog)
-		cond = cond.And(expression.Name("Backlog").Equal(expression.Value(b)))
+		cond = cond.And(CreateBoolCondition("Backlog", Backlog))
 	}
 	if StarOffer != "" {
-		b, _ := strconv.ParseBool(StarOffer)
-		cond = cond.And(expression.Name("StarOffer").Equal(expression.Value(b)))
+		cond = cond.And(CreateBoolCondition("StarOffer", StarOffer))
 	}
 	if len(Branch) != 0 {
 		cond = cond.And(CreateListCondition("Branch", Branch))
 	}
 	if Gender != "" {
-		cond = cond.And(expression.Name("Gender").Equal(expression.Value(Gender)))
+		cond = cond.And(CreateStringCondition("Gender", Gender))
+
 	}
 	if CgpaCond != "" {
 		cond = cond.And(CreateNumericCondition("Cgpa", CgpaCond, Cgpa))
@@ -99,7 +107,7 @@ func CreateCondition(Backlog string, StarOffer string, Branch []string, Gender s
 func ApplyFilter(Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) []EmailItem {
 	// create an aws session
 	logger.WriteToFile("Filter Condition Being generated")
-	
+
 	sess, _ := session.NewSession(&aws.Config{
 
 		Region: aws.String("us-east-1"), DisableSSL: aws.Bool(true),
