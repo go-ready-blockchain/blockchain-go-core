@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
-	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 type EmailItem struct {
@@ -25,7 +24,7 @@ func exitWithError(err error) {
 }
 
 func CreateNumericCondition(attribute string, cond string, valuestring string) expression.ConditionBuilder {
-	logger.WriteToFile("Filter Condition Being generated")
+	//logger.WriteToFile("Filter Condition Being generated")
 
 	value64, _ := strconv.ParseFloat(valuestring, 32)
 	value := float32(value64)
@@ -51,7 +50,7 @@ func CreateNumericCondition(attribute string, cond string, valuestring string) e
 
 }
 func CreateListCondition(attribute string, values []string) expression.ConditionBuilder {
-	logger.WriteToFile("Filter Condition Being generated")
+	//logger.WriteToFile("Filter Condition Being generated")
 	if values[0] == "" {
 		return expression.Name("Email").AttributeExists()
 	}
@@ -74,7 +73,7 @@ func CreateBoolCondition(attribute string, value string) expression.ConditionBui
 }
 
 func CreateCondition(Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) expression.ConditionBuilder {
-	logger.WriteToFile("Filter Condition Being generated")
+	//logger.WriteToFile("Filter Condition Being generated")
 
 	cond := expression.Name("Email").AttributeExists()
 	//cond := expression.Name("Email").NotEqual(expression.Value(""))
@@ -106,7 +105,7 @@ func CreateCondition(Backlog string, StarOffer string, Branch []string, Gender s
 }
 func ApplyFilter(Backlog string, StarOffer string, Branch []string, Gender string, CgpaCond string, Cgpa string, Perc10thCond string, Perc10th string, Perc12thCond string, Perc12th string) []EmailItem {
 	// create an aws session
-	logger.WriteToFile("Filter Condition Being generated")
+	//logger.WriteToFile("Filter Condition Being generated")
 
 	sess, _ := session.NewSession(&aws.Config{
 

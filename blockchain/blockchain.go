@@ -5,7 +5,6 @@ import (
 
 	"github.com/go-ready-blockchain/blockchain-go-core/student"
 	"github.com/go-ready-blockchain/blockchain-go-core/utils"
-	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 type BlockChainIterator struct {
@@ -13,30 +12,30 @@ type BlockChainIterator struct {
 }
 
 func InitBlockChain() {
-	logger.WriteToFile("Intialising the blockchain")
+	//logger.WriteToFile("Intialising the blockchain")
 	firstblock := InitFirstBlock()
 
-	logger.WriteToFile("Storing the blockchain in database")
+	//logger.WriteToFile("Storing the blockchain in database")
 	utils.StoreInBLOCKCHAIN(firstblock.Hash, firstblock.Serialize())
 
 	utils.StoreLastHash(firstblock.Hash)
 
-	logger.WriteToFile("First Block Added to blockchain")
+	//logger.WriteToFile("First Block Added to blockchain")
 	fmt.Println("First Block Added to BlockChain!")
 
 }
 
 func AddBlock(block *Block) {
 
-	logger.WriteToFile("Fetching last hash")
+	//logger.WriteToFile("Fetching last hash")
 	block.PrevHash = utils.GetLastHash()
 
-	logger.WriteToFile("Stroing in Blockchain DB")
+	//logger.WriteToFile("Stroing in Blockchain DB")
 	utils.StoreInBLOCKCHAIN(block.Hash, block.Serialize())
 
 	utils.StoreLastHash(block.Hash)
 
-	logger.WriteToFile("Block Added to Blockchain")
+	//logger.WriteToFile("Block Added to Blockchain")
 	fmt.Println("Added to BlockChain")
 
 }
@@ -83,12 +82,12 @@ func InitBlockInBuffer(name string, Company string) {
 
 	PutBlockIntoBuffer(newBlock, name, Company)
 	fmt.Println("Block added to Buffer")
-	logger.WriteToFile("Block Added to Buffer")
+	//logger.WriteToFile("Block Added to Buffer")
 
 }
 
 func GetBlockFromBuffer(name string, company string) *Block {
-	logger.WriteToFile("Fetching block from buffer")
+	//logger.WriteToFile("Fetching block from buffer")
 	namecompany := name + "/" + company
 	var encodedBlock []byte = []byte("BufferBlock")
 	encodedBlock = utils.FetchBlockFromBuffer(namecompany)
@@ -99,7 +98,7 @@ func GetBlockFromBuffer(name string, company string) *Block {
 }
 
 func PutBlockIntoBuffer(block *Block, name string, company string) {
-	logger.WriteToFile("Storing temporary block into the buffer")
+	//logger.WriteToFile("Storing temporary block into the buffer")
 	namecompany := name + "/" + company
 
 	var encodedblock []byte = block.Serialize()

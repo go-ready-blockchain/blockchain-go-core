@@ -9,7 +9,6 @@ import (
 	"math"
 	"math/big"
 
-	"github.com/go-ready-blockchain/blockchain-go-core/logger"
 )
 
 // Take the data from the block
@@ -31,7 +30,7 @@ type ProofOfWork struct {
 }
 
 func NewProof(b *Block) *ProofOfWork {
-	logger.WriteToFile("Creating new proof")
+	//logger.WriteToFile("Creating new proof")
 	target := big.NewInt(1)
 	target.Lsh(target, uint(256-Difficulty))
 
@@ -58,7 +57,7 @@ func (pow *ProofOfWork) InitData(nonce int) []byte {
 }
 
 func (pow *ProofOfWork) Run() (int, []byte) {
-	logger.WriteToFile("Running Proof Of Work")
+	//logger.WriteToFile("Running Proof Of Work")
 	fmt.Println("Running Proof Of Work Algorithm")
 	var intHash big.Int
 	var hash [32]byte
@@ -85,7 +84,7 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 }
 
 func (pow *ProofOfWork) Validate() bool {
-	logger.WriteToFile("Validating Proof Of Work")
+	//logger.WriteToFile("Validating Proof Of Work")
 	var intHash big.Int
 
 	data := pow.InitData(pow.Block.Nonce)
