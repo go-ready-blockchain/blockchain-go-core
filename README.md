@@ -4,7 +4,6 @@
 
 ## The Consensus Algorithm implemented in Blockchain System is a combination of Proof Of Work and Proof Of Elapsed Time
 
-
 ### Run `go run main.go` to Start the Server and listen on localhost:5000
 
 ### Usage :
